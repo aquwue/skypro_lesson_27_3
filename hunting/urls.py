@@ -19,7 +19,7 @@ from django.urls import path
 from ads import views, admin
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', views.root),
     path('add/', views.AddInfo.as_view()),
     path('add_cat/', views.AddInfoCat.as_view()),
     path('cat/', views.CategoryView.as_view()),

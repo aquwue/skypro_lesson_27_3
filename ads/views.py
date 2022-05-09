@@ -10,6 +10,12 @@ from django.views.generic import DetailView
 from ads.models import Category, Ad
 
 
+def root(request):
+    return JsonResponse({
+        "status": "ok"
+    })
+
+
 class AddInfo(View):
     def get(self, request):
         data_ads = pandas.read_csv('/python/skypro_lesson_27_3/data/ads.csv', sep=",").to_dict()
@@ -38,9 +44,16 @@ class AddInfoCat(View):
 
         i = 0
 
-        while max(data_ads['id'].keys()) > 1:
-            Category.objects.create(
+        while i < len(data_ads['name']):
+            print(data_ads['Id'][i])
+
+            ad = Ad.objects.create(
                 name=data_ads["name"][i],
+                author=data_ads["author"][i],
+                price=data_ads["price"][i],
+                description=data_ads["description"][i],
+                address=data_ads["address"][i],
+                is_published=data_ads["is_published"][i],
             )
             i += 1
 
@@ -66,7 +79,7 @@ class AdView(View):
     def post(self, request):
         ad_data = json.loads(request.body)
 
-        ad = Category.objects.create(
+        ad = Ad.objects.create(
             name=ad_data["name"],
             author=ad_data["author"],
             price=ad_data["price"],
@@ -82,7 +95,7 @@ class AdView(View):
             "price": ad.price,
             "description": ad.description,
             "address": ad.address,
-            "is_published": ad.is_published
+            "is_published": ad.is_published,
         })
 
 
